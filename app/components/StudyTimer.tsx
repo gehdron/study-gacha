@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createClient} from "@/lib/client";
+const supabase = createClient(); 
 
 export default function StudyTimer() {
   const [seconds, setSeconds] = useState(0);
@@ -84,39 +85,40 @@ export default function StudyTimer() {
   return (
     <div className="space-y-6">
       <div className="text-center text-black text-5xl font-bold">{formattedTime}</div>
+        <div className = "">
+            <div className="flex flex-wrap justify-center gap-4">
+                <button
+                onClick={handleStart}
+                disabled={isRunning || isSaving}
+                className="rounded-xl bg-green-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
+                >
+                  Start
+                </button>
 
-      <div className="flex flex-wrap justify-center gap-4">
-        <button
-          onClick={handleStart}
-          disabled={isRunning || isSaving}
-          className="rounded-xl bg-green-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
-        >
-          Start
-        </button>
+                <button
+                onClick={handleStop}
+                disabled={!isRunning || isSaving}
+                className="rounded-xl bg-yellow-500 px-4 py-2 font-semibold text-white disabled:opacity-50"
+                >
+                  Stop
+                </button>
 
-        <button
-          onClick={handleStop}
-          disabled={!isRunning || isSaving}
-          className="rounded-xl bg-yellow-500 px-4 py-2 font-semibold text-white disabled:opacity-50"
-        >
-          Stop
-        </button>
+                <button
+                onClick={handleReset}
+                disabled={isSaving}
+                className="rounded-xl bg-red-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
+                >
+                  Reset
+                </button>
 
-        <button
-          onClick={handleReset}
-          disabled={isSaving}
-          className="rounded-xl bg-red-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
-        >
-          Reset
-        </button>
-
-        <button
-          onClick={handleCompleteSession}
-          disabled={isSaving}
-          className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
-        >
-          {isSaving ? "Saving..." : "Complete Session"}
-        </button>
+                <button
+                onClick={handleCompleteSession}
+                disabled={isSaving}
+                className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
+                >
+                {isSaving ? "Saving..." : "Complete Session"}
+                </button>
+            </div>
       </div>
 
       <p className="text-center text-slate-600">
