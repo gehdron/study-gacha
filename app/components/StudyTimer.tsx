@@ -41,13 +41,6 @@ export default function StudyTimer() {
   };
 
   const handleCompleteSession = async () => {
-    // const minimumSeconds = 25 * 60;
-
-    // if (seconds < minimumSeconds) {
-    //   setMessage("Session must be at least 25 minutes to count.");
-    //   return;
-    // }
-
     setIsSaving(true);
     setIsRunning(false);
     setMessage("");
@@ -88,11 +81,9 @@ export default function StudyTimer() {
     remainingSeconds
   ).padStart(2, "0")}`;
 
-  //const hasMetGoal = seconds >= 25 * 60;
-
   return (
     <div className="space-y-6">
-      <div className="text-center text-5xl font-bold">{formattedTime}</div>
+      <div className="text-center text-black text-5xl font-bold">{formattedTime}</div>
 
       <div className="flex flex-wrap justify-center gap-4">
         <button
@@ -121,7 +112,6 @@ export default function StudyTimer() {
 
         <button
           onClick={handleCompleteSession}
-          //disabled={!hasMetGoal || isSaving}
           disabled={isSaving}
           className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
         >
@@ -132,12 +122,6 @@ export default function StudyTimer() {
       <p className="text-center text-slate-600">
         {isRunning ? "Study session in progress..." : "Timer is paused."}
       </p>
-{/*     
-      <p className="text-center font-medium">
-        {hasMetGoal
-          ? "Study goal reached. You can complete this session."
-          : "Study for at least 25 minutes to complete this session."}
-      </p> */}
 
       {message && (
         <p className="text-center text-sm font-medium text-slate-700">
