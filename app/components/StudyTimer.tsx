@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { createClient} from "@/lib/client";
-const supabase = createClient(); 
 
 export default function StudyTimer() {
   const [seconds, setSeconds] = useState(0);
@@ -41,24 +40,36 @@ export default function StudyTimer() {
     setMessage("");
   };
 
+  
   const handleCompleteSession = async () => {
+
     setIsSaving(true);
     setIsRunning(false);
     setMessage("");
 
+    const supabase = createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      setMessage("You must be logged in to save a session.");
+      setIsSaving(false);
+      return;
+    }
+
     const durationMinutes = Number((seconds / 60).toFixed(2));
 
-    const { data, error } = await supabase
-      .from("study_sessions")
-      .insert([
-        {
-          duration_seconds: seconds,
-          duration_minutes: durationMinutes,
-          completed: true,
-          subject: null,
-        },
-      ])
-      .select();
+    const { error } = await supabase.from("study_sessions").insert([
+      {
+        user_id: user.id,
+        duration_seconds: seconds,
+        duration_minutes: durationMinutes,
+        completed: true,
+        subject: null,
+      },
+    ]);
 
     if (error) {
       setMessage(`Error saving session: ${error.message}`);
@@ -66,11 +77,7 @@ export default function StudyTimer() {
       return;
     }
 
-    setMessage(
-      `Session saved successfully. Logged ${durationMinutes} minutes.`
-    );
-    console.log("Saved session:", data);
-
+    setMessage(`Session saved successfully. Logged ${durationMinutes} minutes.`);
     setIsSaving(false);
     setSeconds(0);
   };
