@@ -20,7 +20,7 @@ function NavLink({ href, label, pathname }: NavLinkProps) {
       href={href}
       className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
         isActive
-          ? "bg-slate-900 text-white"
+          ? "bg-slate-900 text-red"
           : "text-slate-600 hover:bg-slate-100 hover:text-black"
       }`}
     >
@@ -52,7 +52,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/90 backdrop-blur">
+    <nav 
+  style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }}
+  className="h-16 border-b border-slate-200 bg-white"
+>
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-3 md:gap-6">
           <Link href="/" className="mr-2 text-xl font-bold text-slate-900">
@@ -73,7 +76,7 @@ export default function Navbar() {
               </span>
               <button
                 onClick={handleLogout}
-                className="rounded-lg bg-slate-800 px-3 py-2 text-sm font-medium text-white transition hover:bg-black"
+                className="rounded-lg bg-slate-800 px-3 py-2 text-sm font-medium text-white"
               >
                 Logout
               </button>
@@ -82,13 +85,13 @@ export default function Navbar() {
             <>
               <Link
                 href="/login"
-                className="rounded-lg bg-green-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-green-700"
+                className="rounded-lg bg-green-600 px-3 py-2 text-sm font-medium text-white"
               >
                 Login
               </Link>
               <Link
                 href="/signup"
-                className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white"
               >
                 Sign Up
               </Link>
