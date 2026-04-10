@@ -82,9 +82,16 @@ export default function Navbar() {
           <NavLink href="/collection" label="Collection" pathname={pathname} />
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-">
+          {user && (
+            <div className="flex items-center gap-3">
+              <span className="rounded-lg bg-blue-100 px-3 py-1 text-sm font-semibold text-black">
+                💎 {gems ?? "..."}
+              </span>
+            </div>
+          )}
           {user ? (
-            <>
+            <div className="flex items-center gap-4">
               <span className="hidden text-sm text-slate-600 md:inline">
                 {user.email}
               </span>
@@ -94,7 +101,7 @@ export default function Navbar() {
               >
                 Logout
               </button>
-            </>
+            </div>
           ) : (
             <>
               <Link
