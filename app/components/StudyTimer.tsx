@@ -52,7 +52,12 @@ export default function StudyTimer({
 
   const handleCompleteSession = async () => {
     const minimumSeconds = targetMinutes * 60;
-
+    const calculateGems = (minutes: number) => {
+      if (minutes >= 120) return 80;
+      if (minutes >= 60) return 30;
+      if (minutes >= 25) return 10;
+      return 0;
+    };
     if (seconds < minimumSeconds) {
       setMessage(`Session must be at least ${targetMinutes} minutes to count.`);
       return;
@@ -68,6 +73,7 @@ export default function StudyTimer({
       data: { user },
     } = await supabase.auth.getUser();
 
+
     if (!user) {
       setMessage("You must be logged in to save a session.");
       setIsSaving(false);
@@ -75,6 +81,8 @@ export default function StudyTimer({
     }
 
     const durationMinutes = Number((seconds / 60).toFixed(2));
+
+    const gemsEarned = calculateGems(durationMinutes);
 
     const { error } = await supabase.from("study_sessions").insert([
       {
@@ -88,6 +96,31 @@ export default function StudyTimer({
 
     if (error) {
       setMessage(`Error saving session: ${error.message}`);
+      setIsSaving(false);
+      return;
+    }
+
+    const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("gems")
+    .eq("id", user.id)
+    .single();
+
+    if (profileError) {
+      setMessage("Error fetching profile.");
+      setIsSaving(false);
+      return;
+    }
+
+    const newGems = (profile.gems || 0) + gemsEarned;
+
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ gems: newGems })
+      .eq("id", user.id);
+
+    if (updateError) {
+      setMessage("Error updating gems.");
       setIsSaving(false);
       return;
     }

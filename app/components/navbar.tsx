@@ -32,18 +32,32 @@ function NavLink({ href, label, pathname }: NavLinkProps) {
 export default function Navbar() {
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
+  const [gems, setGems] = useState<number | null>(null);
 
   useEffect(() => {
-    const loadUser = async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
+  const loadUser = async () => {
+    const supabase = createClient();
 
-    loadUser();
-  }, []);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    setUser(user);
+
+    if (user) {
+      const { data } = await supabase
+        .from("profiles")
+        .select("gems")
+        .eq("id", user.id)
+        .single();
+
+      setGems(data?.gems ?? 0);
+    }
+  };
+
+  loadUser();
+}, []);
+  
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -53,9 +67,9 @@ export default function Navbar() {
 
   return (
     <nav 
-  style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }}
-  className="h-16 border-b border-slate-200 bg-white"
->
+        style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 9999 }}
+        className="h-16 border-b border-slate-200 bg-white"
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <div className="flex items-center gap-3 md:gap-6">
           <Link href="/" className="mr-2 text-xl font-bold text-slate-900">
