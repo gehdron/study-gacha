@@ -80,6 +80,7 @@ export default function Navbar() {
           <NavLink href="/study" label="Study" pathname={pathname} />
           <NavLink href="/summon" label="Summon" pathname={pathname} />
           <NavLink href="/collection" label="Collection" pathname={pathname} />
+          <NavLink href="/recent-sessions" label="Recent Sessions" pathname={pathname}/>
         </div>
 
         <div className="flex items-center gap-">
