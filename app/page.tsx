@@ -15,7 +15,7 @@ export default async function Home() {
           <div className="text-center">
             <h1 className="text-5xl font-bold text-slate-900">Study Gacha</h1>
             <p className="mt-4 text-lg text-slate-600">
-              Turn study time into pulls.
+              Pull for things!
             </p>
 
             {user ? (
