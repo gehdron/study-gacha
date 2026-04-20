@@ -142,7 +142,7 @@ export default function StudyTimer({
   const progressPercent = Math.min((seconds / (targetMinutes * 60)) * 100, 100);
 
   return (
-    <div className="space-y-6">
+    <div className="fixed bottom-0 left-0 right-0 bg-blue-500 p-7">
       <div>
         <p className="mb-2 text-sm font-medium text-slate-600">
           Studying: {topic}
@@ -150,68 +150,7 @@ export default function StudyTimer({
         <p className="mb-4 text-sm text-slate-500">
           Goal: {targetMinutes} minutes
         </p>
-
-        <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200">
-          <div
-            className="h-full bg-blue-600 transition-all"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
       </div>
-
-      <div className="text-center text-5xl font-bold text-black">
-        {formattedTime}
-      </div>
-
-      <div className="flex flex-wrap justify-center gap-4">
-        <button
-          onClick={handleStart}
-          disabled={isRunning || isSaving}
-          className="rounded-xl bg-green-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
-        >
-          Start
-        </button>
-
-        <button
-          onClick={handleStop}
-          disabled={!isRunning || isSaving}
-          className="rounded-xl bg-yellow-500 px-4 py-2 font-semibold text-white disabled:opacity-50"
-        >
-          Stop
-        </button>
-
-        <button
-          onClick={handleReset}
-          disabled={isSaving}
-          className="rounded-xl bg-red-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
-        >
-          Reset
-        </button>
-
-        <button
-          onClick={handleCompleteSession}
-          disabled={isSaving || !hasMetGoal}
-          className="rounded-xl bg-blue-600 px-4 py-2 font-semibold text-white disabled:opacity-50"
-        >
-          {isSaving ? "Saving..." : "Complete Session"}
-        </button>
-      </div>
-
-      <p className="text-center text-slate-600">
-        {isRunning ? "Study session in progress..." : "Timer is paused."}
-      </p>
-
-      <p className="text-center text-sm font-medium text-slate-700">
-        {hasMetGoal
-          ? "Study goal reached. You can complete this session."
-          : `Study for at least ${targetMinutes} minutes to complete this session.`}
-      </p>
-
-      {message && (
-        <p className="text-center text-sm font-medium text-slate-700">
-          {message}
-        </p>
-      )}
     </div>
   );
 }
