@@ -1,13 +1,13 @@
 import CharacterModel from "./characterModel";
 import { Suspense } from "react";
-import { characterRegistry } from "@/app/data/registry";
+import { characterRegistry } from "@/app/data/characterRegistry";
 import { CharacterSlot } from "@/types";
 
-interface SlotProps {
+interface CharacterSlotProps {
     slot: CharacterSlot;
 }
 
-export default function Slot({slot}:SlotProps){
+export default function CharacterSlotDisplay({slot}:CharacterSlotProps){
     if (slot.occupantId == null) {
         return null;
     }
@@ -21,4 +21,6 @@ export default function Slot({slot}:SlotProps){
         </Suspense>
     )
 }
+
+
 

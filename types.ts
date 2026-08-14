@@ -1,6 +1,6 @@
 export type Vec3 = [number, number, number];
 
-export interface CharacterModelProps{
+export interface ModelProps{
     url:string;
     position?: Vec3;
     rotation?: Vec3;
@@ -15,7 +15,7 @@ export interface BaseSlot {
 }
 
 export interface FurnitureSlot extends BaseSlot{
-    slotType: 'desk' | 'chair' | 'shelf';
+    slotType: 'desk' | 'chair' | 'shelf' | 'clock' | 'computer' | 'window';
 }
 
 export interface CharacterSlot extends BaseSlot{
