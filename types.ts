@@ -20,3 +20,8 @@ export interface FurnitureSlot extends BaseSlot{
 
 export interface CharacterSlot extends BaseSlot{
 }
+
+export interface RegEntry{
+    url: string;
+    scale?: Vec3;
+}
