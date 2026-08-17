@@ -14,7 +14,8 @@ export default function CharacterSlotDisplay({slot}:CharacterSlotProps){
     const model = characterRegistry[slot.occupantId];
     if(model == null){
         return null;
-    }
+    } 
+    console.log(model.url);
     return(
         <Suspense fallback={null}>
             <CharacterModel url={model.url} position={slot.position} rotation={slot.rotation} scale={model.scale}/>

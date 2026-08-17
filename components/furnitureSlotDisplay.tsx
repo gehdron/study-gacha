@@ -15,6 +15,7 @@ export default function FurnitureSlotDisplay({slot}:FurnitureSlotProps){
         if(model == null){
             return null;
         }
+        console.log(model.url);
         return(
             <Suspense fallback={null}>
                 <FurnitureModel url={model.url} position={slot.position} rotation={slot.rotation} scale={model.scale}/>

@@ -15,7 +15,7 @@ export interface BaseSlot {
 }
 
 export interface FurnitureSlot extends BaseSlot{
-    slotType: 'desk' | 'chair' | 'shelf' | 'clock' | 'computer' | 'window';
+    slotType?: 'desk' | 'chair' | 'shelf' | 'clock' | 'computer' | 'window';
 }
 
 export interface CharacterSlot extends BaseSlot{
