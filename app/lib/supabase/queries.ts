@@ -43,3 +43,25 @@ export async function fetchRoomSlots(): Promise<Record<string, string | null>> {
 
   return slotMap;
 }
+
+export async function saveRoomSlot(slot_id: string, occupant_id: string | null) {
+  const supabase = createClient();
+
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError != null || userData.user == null) {
+    console.log(userError);
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from('room_slots')
+    .upsert({
+      user_id: userData.user.id,
+      slot_id: slot_id,
+      occupant_id: occupant_id,
+    }, { onConflict: 'user_id,slot_id' });
+
+  if (error != null) {
+    console.log(error);
+  }
+}

@@ -25,5 +25,13 @@ export interface RegEntry {
   url: string;
   scale?: Vec3;
   slotType?: 'desk' | 'chair' | 'shelf' | 'clock' | 'computer' | 'window';
-  name?: string; // display name, optional but nice for the picker
+  name?: string; 
+  rarity: 'common' | 'rare' | 'epic';
+  set: string;
+}
+
+export interface PullPoolEntry {
+  id: string;
+  kind: "character" | "furniture";
+  rarity: 'common' | 'rare' | 'epic';
 }
