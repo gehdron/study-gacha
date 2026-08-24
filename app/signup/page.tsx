@@ -1,19 +1,31 @@
-"use server"
+"use client"
+import { useActionState } from "react";
+import Link from "next/link";
+import { signUp } from "../login/actions";
 
-import { createClient } from '@/app/lib/supabase/server'
-import { redirect } from 'next/navigation'
+export default function SignupPage() {
+  const [state, formAction, isPending] = useActionState<{ error: string | null }, FormData>(
+    signUp,
+    { error: null }
+  );
 
-export async function signIn(formData: FormData) {
-  const supabase = await createClient() // note: your server.ts createClient is async — recall why
-  
-  const email = formData.get("email")
-  const password = formData.get("password")
+  return (
+    <form action={formAction}>
+      <label htmlFor="email">Email</label>
+      <input id="email" name="email" type="email" required />
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
+      <label htmlFor="password">Password</label>
+      <input id="password" name="password" type="password" required />
 
-  if (error) {
-    // what should happen here? think about how to surface this to the user
-  }
+      {state?.error && <p>{state.error}</p>}
 
-  redirect('/')
+      <button type="submit" disabled={isPending}>
+        {isPending ? "Pending" : "Sign Up"}
+      </button>
+
+      <p>
+        Have an account? <Link href="/login">Sign in</Link>
+      </p>
+    </form>
+  );
 }
