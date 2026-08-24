@@ -21,7 +21,9 @@ export interface FurnitureSlot extends BaseSlot{
 export interface CharacterSlot extends BaseSlot{
 }
 
-export interface RegEntry{
-    url: string;
-    scale?: Vec3;
+export interface RegEntry {
+  url: string;
+  scale?: Vec3;
+  slotType?: 'desk' | 'chair' | 'shelf' | 'clock' | 'computer' | 'window';
+  name?: string; // display name, optional but nice for the picker
 }
