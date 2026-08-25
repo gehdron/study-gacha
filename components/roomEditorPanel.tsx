@@ -22,7 +22,7 @@ export default function RoomEditorPanel({
   onFurnitureSlotChange,
 }: RoomEditorPanelProps) {
   return (
-    <div className="fixed top-0 right-0 h-screen w-80 overflow-y-auto bg-neutral-900 text-white p-4 space-y-6">
+    <div className="p-4 space-y-6">
       <h2 className="text-lg font-semibold">Room Editor</h2>
 
       <div>

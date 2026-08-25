@@ -65,3 +65,27 @@ export async function saveRoomSlot(slot_id: string, occupant_id: string | null) 
     console.log(error);
   }
 }
+
+export async function fetchTasks(): Promise<
+  { id: string; title: string; taskType: "daily" | "weekly" | "monthly"; estimatedMinutes: number; completed: boolean }[]
+> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("tasks")
+    .select("id, title, task_type, estimated_minutes, completed")
+    .eq("completed", false);
+
+  if (error != null) {
+    console.log(error);
+  }
+
+  return (
+    data?.map((row) => ({
+      id: row.id,
+      title: row.title,
+      taskType: row.task_type,
+      estimatedMinutes: row.estimated_minutes,
+      completed: row.completed,
+    })) ?? []
+  );
+}

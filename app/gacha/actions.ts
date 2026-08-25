@@ -2,13 +2,13 @@
 "use server"
 
 import { createClient } from "@/app/lib/supabase/server";
-import { pull } from "@/components/gachaPage";
+import { pull } from "@/components/gachaSystem";
 
 const PULL_COST = 100;
 const DUPE_REWARD = 10;
 
 export async function performPull(prevState: any, formData: FormData) {
-  const chosen = pull("base"); // "base" = your default set name — adjust as needed
+  const chosen = pull("default"); // "base" = your default set name — adjust as needed
 
   if (!chosen) {
     return { error: "Nothing available to pull right now." };

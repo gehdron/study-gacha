@@ -9,7 +9,8 @@ import { useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { fetchOwnedCharacters, fetchOwnedFurniture, fetchRoomSlots, saveRoomSlot } from "@/app/lib/supabase/queries";
 import { applySavedOccupancy } from "@/app/lib/applySavedOccupancy";
-import RoomEditorPanel from "./roomEditorPanel";
+import RoomHUD from "./roomHUD";
+import StudyTimer from "./studyTimer";
 
 export default function RoomScene(){
     const { nodes, scene } = useGLTF('/Room.glb');
@@ -56,7 +57,8 @@ export default function RoomScene(){
 
     return(
         <div id="canvas-container" className = "w-screen h-screen">
-            <RoomEditorPanel
+            <StudyTimer />
+            <RoomHUD
                 characterSlots={characterLayout}
                 furnitureSlots={furnitureLayout}
                 ownedCharacterIds={ownedCharacterIds}
