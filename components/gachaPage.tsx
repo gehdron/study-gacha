@@ -40,3 +40,14 @@ function poolBuilder(set: string): PullPoolEntry[] {
 
   return [...characterPool,...furniturePool] 
 }
+
+export function pull(set: string): PullPoolEntry | undefined {
+  const pool = poolBuilder(set);
+  const tier = pickRarityTier();
+
+  const tierPool: PullPoolEntry[] = pool.filter((item) => item.rarity == tier)
+
+  const pulledItem = tierPool[Math.floor(Math.random()*tierPool.length)]
+  
+  return pulledItem;
+}
