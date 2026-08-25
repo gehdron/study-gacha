@@ -65,14 +65,4 @@ Back-loaded on purpose — the last few minutes before the 50-minute cap are wor
 - `profiles` currently has a client-facing `UPDATE` policy that isn't fully locked down against balance tampering; safe today only because all currency-changing paths route through the `SECURITY DEFINER` functions instead.
 - No email confirmation on signup (disabled for faster prototype testing).
 - Blender source scenes need cleanup (separating reference geometry from exported shells) before adding new rooms.
-
-## Setup
-
-1. `npm install`
-2. Create a Supabase project, run the schema/functions in `supabase/` (SQL Editor).
-3. Add `.env.local`:
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
-   ```
-4. `npm run dev`
+- Currently, art assets are extremely barebones, as well as UI. This will be updated whenever I either get good at art or hire an artist.
