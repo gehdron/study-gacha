@@ -1,31 +1,64 @@
 "use client"
+
 import { useActionState } from "react";
 import Link from "next/link";
 import { signIn } from "./actions";
 
 export default function LoginPage() {
-  const [state, formAction, isPending] = useActionState<{ error: string | null }, FormData>(
-    signIn,
-    { error: null }
-  );
+  const [state, formAction, isPending] = useActionState<
+    { error: string | null },
+    FormData
+  >(signIn, { error: null });
 
   return (
-    <form action={formAction}>
-      <label htmlFor="email">Email</label>
-      <input id="email" name="email" type="email" required />
+    <div className="min-h-screen bg-neutral-950 text-white flex items-center justify-center px-4">
+      <div className="w-full max-w-sm">
+        <h1 className="text-2xl font-bold text-center mb-1">Welcome back</h1>
+        <p className="text-neutral-400 text-center mb-8">Log in to your room</p>
 
-      <label htmlFor="password">Password</label>
-      <input id="password" name="password" type="password" required />
+        <form action={formAction} className="flex flex-col gap-4">
+          <div>
+            <label htmlFor="email" className="text-sm text-neutral-400">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              className="w-full mt-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500"
+            />
+          </div>
 
-      {state?.error && <p>{state.error}</p>}
+          <div>
+            <label htmlFor="password" className="text-sm text-neutral-400">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              className="w-full mt-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 focus:outline-none focus:border-purple-500"
+            />
+          </div>
 
-      <button type="submit" disabled={isPending}>
-        {isPending ? "Pending" : "Sign In"}
-      </button>
+          {state?.error && (
+            <p className="text-red-400 text-sm">{state.error}</p>
+          )}
 
-      <p>
-        Don't have an account? <Link href="/signup">Sign up</Link>
-      </p>
-    </form>
+          <button
+            type="submit"
+            disabled={isPending}
+            className="bg-purple-600 hover:bg-purple-500 disabled:opacity-60 rounded-lg py-2 font-medium mt-2"
+          >
+            {isPending ? "Signing in..." : "Sign In"}
+          </button>
+        </form>
+
+        <p className="text-center text-neutral-400 text-sm mt-6">
+          Don't have an account?{" "}
+          <Link href="/signup" className="text-purple-400 hover:text-purple-300">
+            Sign up
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 }
