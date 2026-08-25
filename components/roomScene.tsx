@@ -1,7 +1,6 @@
 "use client"
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import CharacterSlotDisplay from "./characterSlotDisplay";
 import FurnitureSlotDisplay from "./furnitureSlotDisplay";
 import { extractSlotsFromNode } from "@/app/lib/extractSlotsFromNodes";
@@ -11,6 +10,7 @@ import { fetchOwnedCharacters, fetchOwnedFurniture, fetchRoomSlots, saveRoomSlot
 import { applySavedOccupancy } from "@/app/lib/applySavedOccupancy";
 import RoomHUD from "./roomHUD";
 import StudyTimer from "./studyTimer";
+import DragLookControls from "./dragLookControls";
 
 export default function RoomScene(){
     const { nodes, scene } = useGLTF('/Room.glb');
@@ -67,7 +67,7 @@ export default function RoomScene(){
                 onFurnitureSlotChange={handleFurnitureSlotChange}
             />
             <Canvas>
-                <OrbitControls/>
+                <DragLookControls />
                 <ambientLight intensity={1} />
                 {characterLayout.map((item) => (
                     <CharacterSlotDisplay slot={item} key={item.id}/>
