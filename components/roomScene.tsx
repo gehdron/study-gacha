@@ -5,7 +5,7 @@ import CharacterSlotDisplay from "./characterSlotDisplay";
 import FurnitureSlotDisplay from "./furnitureSlotDisplay";
 import { extractSlotsFromNode } from "@/app/lib/extractSlotsFromNodes";
 import { useState, useEffect } from "react";
-import { useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 import { fetchOwnedCharacters, fetchOwnedFurniture, fetchRoomSlots, saveRoomSlot } from "@/app/lib/supabase/queries";
 import { applySavedOccupancy } from "@/app/lib/applySavedOccupancy";
 import RoomHUD from "./roomHUD";
@@ -66,8 +66,8 @@ export default function RoomScene(){
                 onCharacterSlotChange={handleCharacterSlotChange}
                 onFurnitureSlotChange={handleFurnitureSlotChange}
             />
-            <Canvas>
-                <DragLookControls />
+            <Canvas camera={{position: [-2, 1, 1]}}>
+                <OrbitControls/>
                 <ambientLight intensity={1} />
                 {characterLayout.map((item) => (
                     <CharacterSlotDisplay slot={item} key={item.id}/>
