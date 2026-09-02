@@ -1,68 +1,99 @@
 # Study Gacha
 
-A study-productivity app disguised as a gacha game: study sessions and completed tasks earn currency, which you spend on gacha pulls to unlock anime-girl characters and furniture for a fully customizable 3D room.
+A study-productivity application disguised as a gacha game. Users earn in-game currency through focused study sessions and completed tasks, which can be spent on gacha pulls to unlock characters and furniture for a fully customizable 3D room.
 
-## Concept
+## Core Features & Mechanics
 
-- Study using a built-in pomodoro-style timer (caps at 50 minutes per session).
-- Complete self-created daily/weekly/monthly tasks.
-- Both earn **pull currency**, scaled by an exponential curve that rewards longer, more focused sessions/tasks — up to 100 currency at the 50-minute cap.
-- Spend pull currency on gacha pulls to unlock characters and furniture.
-- Duplicate pulls convert into **furniture currency** instead of stacking.
-- Decorate a fully 3D room — built in Blender, rendered with React Three Fiber — by placing owned characters and furniture into named slots.
+### Study & Focus
+Study using a built-in pomodoro-style timer capped at 50 minutes per session, or complete self-created daily/weekly/monthly tasks to earn **pull currency**. 
+
+![Starting Timer](<img width="1920" height="1080" alt="startingtimer" src="https://github.com/user-attachments/assets/2b6f4414-1ec4-458c-afaa-105a908f89ac" />)
+
+The reward system uses an exponential curve that heavily favors longer, more focused sessions, scaling up to 100 currency at the 50-minute cap. 
+
+![End Timer](<img width="1920" height="1080" alt="endtimer" src="https://github.com/user-attachments/assets/303b5375-878d-4325-bb0c-eb7b6a6f1ae7" />)
+
+### Gacha System
+Spend earned pull currency on randomized gacha pulls to unlock anime-girl characters and room furniture. 
+
+![Gacha Pulling]()
+
+If you pull an item you already own, the duplicate does not stack. Instead, it automatically converts into **furniture currency**.
+
+![Duplicate Pull](<img width="1920" height="1080" alt="duplicatePull" src="https://github.com/user-attachments/assets/91edc65d-b476-45b1-b3fa-02719f7cee5f" />)
+
+*(Attempting to pull without enough currency will prevent the transaction)*
+
+![Insufficient Funds](<img width="1920" height="1080" alt="insufficentfunds" src="https://github.com/user-attachments/assets/34c34660-0d77-4db8-bbb8-e804ebe39b8d" />)
+
+### 3D Room Customization
+Decorate a fully 3D room built in Blender and rendered with React Three Fiber. Users can customize their space by placing their owned characters and furniture into designated named slots.
 
 ## Tech Stack
 
-- **Frontend**: Next.js (App Router) + TypeScript
-- **3D rendering**: React Three Fiber, drei, Three.js
-- **Backend / persistence**: Supabase (Postgres, Auth, Row Level Security)
-- **Styling**: Tailwind CSS
+| Category | Technology |
+| :--- | :--- |
+| **Frontend** | Next.js (App Router), TypeScript |
+| **3D Rendering** | React Three Fiber, drei, Three.js |
+| **Backend / Database** | Supabase (Postgres, Auth, Row Level Security) |
+| **Styling** | Tailwind CSS |
 
 ## Core Architecture
 
-### Room & slot system
-
-The room is a single `.glb` file (exported from Blender) containing structural geometry (walls, floor, window) plus named **marker Empties** (`DeskSlot`, `ChairSlot`, `MikuSlot`, `Shelf1Slot`, etc.) with no geometry of their own — just transforms.
+### Room & Slot System
+The 3D room relies on a single `.glb` file exported from Blender. It contains structural geometry (walls, floor, window) alongside named **marker Empties** (e.g., `DeskSlot`, `ChairSlot`, `MikuSlot`, `Shelf1Slot`). These empties contain no geometry, only transform data.
 
 At runtime:
 1. `useGLTF` loads the shell and exposes its `nodes`.
-2. `extractSlotsFromNode(nodes)` walks every node, matches marker names against a config (`slotMarkerConfig`) of exact-name and prefix-based rules, and produces typed `CharacterSlot[]` / `FurnitureSlot[]` — position and rotation come directly from the glb, never duplicated elsewhere.
-3. `applySavedOccupancy(slots, savedOccupancy)` overlays a user's saved `room_slots` data on top of those glb-derived defaults.
-4. Actual furniture/character models are loaded separately (their own `.glb` files) via small registries (`characterRegistry`, `furnitureRegistry`) keyed by id, and rendered into each slot's transform.
+2. `extractSlotsFromNode(nodes)` traverses the nodes, matching marker names against a configuration (`slotMarkerConfig`) using exact-name and prefix-based rules. It produces typed arrays (`CharacterSlot[]`, `FurnitureSlot[]`). Position and rotation data are derived exclusively from the `.glb`.
+3. `applySavedOccupancy(slots, savedOccupancy)` overlays the user's persistent `room_slots` data onto the `.glb` defaults.
+4. Actual models are loaded from their own `.glb` files via registries (`characterRegistry`, `furnitureRegistry`) keyed by ID, rendering directly into each slot's transform.
 
-This design means adding a second room is just: export a new shell with the same marker-naming convention — no new code required.
+This architecture ensures that adding a new room requires zero new code—only a new exported shell utilizing the same marker-naming convention.
 
-### Data model (Supabase)
+![Changing Furniture]()
+
+### Task System
+In addition to the study room, users are also able to add tasks to to their todo list. Completing the task will also give rewards based on how long the task took, There are a few slots users must fill out.
+
+| Field | Purpose |
+| :--- | :--- |
+| `title` | The name of the task. |
+| `Repetition` | Options of Daily, Weekly, and Monthly. The longer the time period, the greater the rewards. |
+| `Est Minutes` | The estimated number of minutes that the task should take. Rewards are currently given based on a combination of this and `Repetition` |
+
+[GIF COMING SOON]
+
+### Data Model
 
 | Table | Purpose |
-|---|---|
-| `profiles` | Per-user `pull_currency` / `furniture_currency` balances. Auto-created via a trigger on signup. |
-| `owned_characters` / `owned_furniture` | Permanent ownership records from gacha pulls. |
-| `room_slots` | Per-user, per-slot occupancy (`slot_id` → `occupant_id`). Only stores what varies per user — never position/rotation/shape data, which stays derived from the glb. |
-| `study_sessions` / `tasks` | Logged study sessions and user-created tasks, each with the currency they awarded. |
+| :--- | :--- |
+| `profiles` | Tracks per-user `pull_currency` and `furniture_currency` balances. Auto-created via a trigger on user signup. |
+| `owned_characters` / `owned_furniture` | Permanent ownership records generated from gacha pulls. |
+| `room_slots` | Tracks per-user, per-slot occupancy (`slot_id` → `occupant_id`). Only stores variable user data, never position/rotation data. |
+| `study_sessions` / `tasks` | Logs of completed study sessions and tasks, including the currency awarded for each. |
 
-All tables use Row Level Security — users can only read/write their own rows. Currency-affecting operations (gacha pulls, session/task rewards) run through `SECURITY DEFINER` Postgres functions (`execute_pull`, `log_study_session`, `complete_task`) called via RPC, so balances can never be manipulated directly from the client.
+**Security:** All tables utilize Row Level Security (RLS) to ensure users can only read and write their own rows. Operations that affect currency (gacha pulls, session/task rewards) are routed through `SECURITY DEFINER` Postgres functions (`execute_pull`, `log_study_session`, `complete_task`) called via RPC. This prevents direct client-side manipulation of balances.
 
-### Currency curve
+### Currency Curve
+Both study sessions and task completions calculate rewards using a back-loaded exponential equation:
 
-Both study sessions and task completion use the same reward shape:
-
-```
+```text
 reward = round((min(minutes, 50) / 50)² × 100)
 ```
 
-Back-loaded on purpose — the last few minutes before the 50-minute cap are worth disproportionately more than the first few, to reward sustained focus.
+The final minutes approaching the 50-minute cap yield disproportionately higher rewards than the initial minutes, heavily incentivizing sustained focus.
 
 ## App Structure
 
-- `/` — landing page
-- `/login`, `/signup` — auth
-- `/room` — the entire game experience: persistent 3D room with a floating bottom tab bar (Decorate / Gacha / Tasks) and a top pomodoro timer/clock, all layered over a permanently-mounted `<Canvas>`
+- `/` — Landing page
+- `/login`, `/signup` — Authentication
+- `/room` — The core application interface: a persistent 3D room layered behind a permanent `<Canvas>`, featuring a floating bottom tab bar (Decorate / Gacha / Tasks) and a top pomodoro timer/clock.
 
-## Known Limitations (prototype scope)
+## Known Limitations
 
-- Single hardcoded room — multi-room support is architected for but not yet exposed.
-- `profiles` currently has a client-facing `UPDATE` policy that isn't fully locked down against balance tampering; safe today only because all currency-changing paths route through the `SECURITY DEFINER` functions instead.
-- No email confirmation on signup (disabled for faster prototype testing).
-- Blender source scenes need cleanup (separating reference geometry from exported shells) before adding new rooms.
-- Currently, art assets are extremely barebones, as well as UI. This will be updated whenever I either get good at art or hire an artist.
+- **Single Room Restriction:** The current prototype features a single hardcoded room. The multi-room architecture is built but not yet exposed.
+- **Client-Facing Update Policy:** The `profiles` table currently possesses a client-facing `UPDATE` policy that is not fully locked down against balance tampering. This is temporarily mitigated by routing all standard currency changes through `SECURITY DEFINER` functions.
+- **Auth Bypass:** Email confirmation on signup is disabled to expedite prototype testing.
+- **Asset Cleanup:** Blender source scenes require cleanup (separating reference geometry from exported shells) before additional rooms can be integrated smoothly.
+- **Placeholder Assets:** UI and art assets are currently in a barebones prototype state and will be updated in future iterations.
