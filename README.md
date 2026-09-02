@@ -7,7 +7,7 @@ A study-productivity application disguised as a gacha game. Users earn in-game c
 ### Study & Focus
 Study using a built-in pomodoro-style timer capped at 50 minutes per session, or complete self-created daily/weekly/monthly tasks to earn **pull currency**. 
 
-![Starting Timer](<img width="1920" height="1080" alt="startingtimer" src="https://github.com/user-attachments/assets/2b6f4414-1ec4-458c-afaa-105a908f89ac" />)
+![Starting Timer]("Study-Gacha-ReadME-Gifs\startingtimer.gif")
 
 The reward system uses an exponential curve that heavily favors longer, more focused sessions, scaling up to 100 currency at the 50-minute cap. 
 
