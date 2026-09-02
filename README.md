@@ -20,7 +20,8 @@ Spend earned pull currency on randomized gacha pulls to unlock anime-girl charac
 
 If you pull an item you already own, the duplicate does not stack. Instead, it automatically converts into **furniture currency**.
 
-![Duplicate Pull](Study-Gacha-ReadME-Gifs/duplicatepull.gif)
+![Duplicate Pull](Study-Gacha-ReadME-Gifs/duplicatePull.gif)
+
 
 *(Attempting to pull without enough currency will prevent the transaction)*
 
