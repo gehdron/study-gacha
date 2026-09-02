@@ -7,24 +7,24 @@ A study-productivity application disguised as a gacha game. Users earn in-game c
 ### Study & Focus
 Study using a built-in pomodoro-style timer capped at 50 minutes per session, or complete self-created daily/weekly/monthly tasks to earn **pull currency**. 
 
-![Starting Timer](Study-Gacha-ReadME-Gifs\startingtimer.gif)
+![Starting Timer](Study-Gacha-ReadME-Gifs/startingtimer.gif)
 
 The reward system uses an exponential curve that heavily favors longer, more focused sessions, scaling up to 100 currency at the 50-minute cap. 
 
-![End Timer](<img width="1920" height="1080" alt="endtimer" src="https://github.com/user-attachments/assets/303b5375-878d-4325-bb0c-eb7b6a6f1ae7" />)
+![End Timer](Study-Gacha-ReadME-Gifs/endtimer.gif)
 
 ### Gacha System
 Spend earned pull currency on randomized gacha pulls to unlock anime-girl characters and room furniture. 
 
-![Gacha Pulling]()
+![Gacha Pulling](Study-Gacha-ReadME-Gifs/gachapulling.gif)
 
 If you pull an item you already own, the duplicate does not stack. Instead, it automatically converts into **furniture currency**.
 
-![Duplicate Pull](<img width="1920" height="1080" alt="duplicatePull" src="https://github.com/user-attachments/assets/91edc65d-b476-45b1-b3fa-02719f7cee5f" />)
+![Duplicate Pull](Study-Gacha-ReadME-Gifs/duplicatepull.gif)
 
 *(Attempting to pull without enough currency will prevent the transaction)*
 
-![Insufficient Funds](<img width="1920" height="1080" alt="insufficentfunds" src="https://github.com/user-attachments/assets/34c34660-0d77-4db8-bbb8-e804ebe39b8d" />)
+![Insufficient Funds](Study-Gacha-ReadME-Gifs/insufficentfunds.gif)
 
 ### 3D Room Customization
 Decorate a fully 3D room built in Blender and rendered with React Three Fiber. Users can customize their space by placing their owned characters and furniture into designated named slots.
@@ -51,7 +51,7 @@ At runtime:
 
 This architecture ensures that adding a new room requires zero new code—only a new exported shell utilizing the same marker-naming convention.
 
-![Changing Furniture]()
+![Changing Furniture](Study-Gacha-ReadME-Gifs/changingfurniture.gif)
 
 ### Task System
 In addition to the study room, users are also able to add tasks to to their todo list. Completing the task will also give rewards based on how long the task took, There are a few slots users must fill out.
@@ -62,7 +62,7 @@ In addition to the study room, users are also able to add tasks to to their todo
 | `Repetition` | Options of Daily, Weekly, and Monthly. The longer the time period, the greater the rewards. |
 | `Est Minutes` | The estimated number of minutes that the task should take. Rewards are currently given based on a combination of this and `Repetition` |
 
-[GIF COMING SOON]
+![Add Task](Study-Gacha-ReadME-Gifs/addtasks.gif)
 
 ### Data Model
 
